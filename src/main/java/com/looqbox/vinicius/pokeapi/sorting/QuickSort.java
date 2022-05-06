@@ -26,6 +26,42 @@ import java.util.List;
     ele de lugar com o elemento da posição leftIndex que é o primeiro elemento da parte 
     direita. Dessa forma o pivot fica dividindo as partes. O que estiver do lado esquerdo
     dele é menor que ele e o que estiver do lado direito é maior.
+
+    Análise de complexidade:
+    - transformar em array: O(n) no pior caso
+    - particionamento: O(n) em todos os casos
+        n - 1 comparações
+        n - m - 1 operações swap com m veriável, com m < n,
+            podemos substituir m por 0 e considerar o pior
+            caso. Ficando com n - 1 operações de swap
+        1 operação de swap
+        total: n - 1 + n - 1 + 1 = 2n - 1
+        desconsiderando as constantes e os parâmetros
+        de grau menor temos: O(n)
+    - sort: O(n log n) no melhor caso e O(n^2) no pior caso
+        - melhor caso: em que todos os pivots dividem o elementos
+        ao meio.
+        calculando o tempo do sort baseado no partition:
+        T(sort) = O(n) + 2 * T(sort) = O(n) + 2 * (O(n / 2) + 2 * T(sort))
+        Podemos ver que o tempo de partition diminui pela metade uma vez
+        que as partes são divididas igualmente. Nesse caso, o número de divisões
+        necessárias para que se chegue no caso trivial (no caso em que n = 1) é k:
+        n / 2 ^ k = 1 => n = 2 ^ k => k = log_2 n
+        Assim, podemos completar o cálculo acima:
+        complexidade = O(n * log_2 n) = O(n log n)
+        - pior caso: todos os pivots dividem os elementos ao meio.
+        Nesse caso, podemos considerar que ele vai usar o sort
+        apenas em uma das partes porque a outra será vazia.
+        T(sort) = O(n) + T(sort) = O(n) + (O(n - 1) + T(sort)) = ...
+        => T(sort) = O(n) + O(n - 1) + O(n - 2) + ...
+        Pela progressão aritmética temos:
+        T(sort) = O((n * (n + 1) / 2)) = O((n^2 + n) / 2) = O(n^2)
+    - transformar em lista: O(n) no pior caso
+
+    Assim, temos que:
+    melhor caso: O(n + n log n + n) = O(n log n)
+    pior caso: O(n + n^2 + n) = O(n^2)
+
 */
 public class QuickSort<T> implements Sort<T> {
 
