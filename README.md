@@ -1,45 +1,99 @@
-### Would you like to work with us? Apply [here](https://app.pipefy.com/public_form/840222)!
+# PokeApi Microsservice
 
-# Looqbox Backend Challenge
-![Looqbox](https://github.com/looqbox/looqbox-backend-challenge/blob/master/logo.png)
+PokeApi microsservice that consumes [PokeApi](https://pokeapi.co/).
 
-## Challenge
-In this challenge you will need to build a **Microservice** using the stack below and a provided api.
+## Running
 
-We will not use anything from your project other than evaluate your skills and you are free to use this project in your portfolio.
+Excute the project by the command below. You can access it at [locahost:3000](localhost:3000).
 
-## Stack
-We use:
-- Java/Kotlin
-- `Spring Boot` for the framework
-- `Gradle` for dependency management and local deployment
+```
+gradle bootRun
+```
 
-## Submitting
-- Make a fork of this repository
-- When you're done send us a pull request
+## Api
 
-# Guidelines
-You need to make a HTTP REST API that 
-- Consumes the [PokeAPI](https://pokeapi.co/) data.
-- Provides an endpoint to query pokemons based on the substring of its name. For example:
-  - Request: `GET /pokemons?q=pidge`
-  - Expected response: ```{"result" : ["pidgey", "pidgeotto", "pidgeot"]}```
-- You need to apply sorting by two algorithms (it is not permitted to use a sorting library, for this particular feature you must implement by yourself). And it’s very important to explain your implemented logic (For instance, you can use inline comments on the source code): 
-  - the pokemon name's length and; 
-  - the pokemon name's alphabetical order 
- 
-- Find a way to indicate the pokemon name highlight regarding the piece of its queried name. For example:
-  - The queried name was `pi`
-  - The highlight object must be ```{"name": "pikachu", "highlight": "<pre>pi</pre>kachu"}``` or ```{"name": "pikachu", "start": 0, "end": 2}```
-- Draw a diagram explaining your architecture
+### List Pokemons
 
-## Bonus points!
-- Design Patterns
-- Unit Testing
-- Dockerize the application
-- Explain the Big-Ω (time complexity) of your sorting algorithms (explain how you calculated them)
+List pokemons based on name substring.
 
-## Useful links
-- [Spring Framework](https://spring.io/)
-- [Gradle](https://gradle.org/)
-- [PokeApi docs](https://pokeapi.co/docs/v2.html)
+`GET /pokemons?q=<query>&orderBy=<orderBy>`
+
+Parameters:
+
+| Parameter | Description | Values |
+| --------- | ----------- | ------ |
+| q         | Pokemon's name substring that will filter results | String |
+| orderBy   | Type of results sorting | length ; alphabetical |
+
+Request:
+
+```bash
+curl --location \
+     --request GET \
+     'localhost:3000/pokemons?q=bul&orderBy=length'
+```
+
+Response:
+
+`Status: 200 OK `
+
+```json
+[
+    {
+        "name": "granbull",
+        "highlight": {
+            "formattedName": "gran<b>bul</b>l",
+            "start": 4,
+            "end": 7
+        }
+    },
+    {
+        "name": "snubbull",
+        "highlight": {
+            "formattedName": "snub<b>bul</b>l",
+            "start": 4,
+            "end": 7
+        }
+    },
+    {
+        "name": "tapu-bulu",
+        "highlight": {
+            "formattedName": "tapu-<b>bul</b>u",
+            "start": 5,
+            "end": 8
+        }
+    },
+    {
+        "name": "bulbasaur",
+        "highlight": {
+            "formattedName": "<b>bul</b>basaur",
+            "start": 0,
+            "end": 3
+        }
+    }
+]
+```
+# Arquitecture
+
+![Arquitecture](arquitecture.png)
+
+# Docker
+
+Before creating image you must build project.
+
+```bash
+gradle build
+```
+
+Then, you can use `docker-compose` to run the container.
+
+```bash
+docker-compose up -d
+```
+
+You can access the system at [localhost:3000](localhost:3000). To stop the system
+execute the command below.
+
+```bash
+docker-compose down
+```
