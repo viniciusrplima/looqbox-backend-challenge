@@ -28,8 +28,8 @@ public class PokemonController {
                                           @RequestParam(name = "orderBy", required = false, defaultValue = "") String orderBy) {
 
         if (orderBy.length() > 0 &&
-            !OrderBy.LENGTH_SORT.equals(orderBy) &&
-            !OrderBy.ALPHABETICAL_SORT.equals(orderBy)) {
+            !OrderBy.LENGTH_SORT.equalsIgnoreCase(orderBy) &&
+            !OrderBy.ALPHABETICAL_SORT.equalsIgnoreCase(orderBy)) {
 
             HttpStatus status = HttpStatus.BAD_REQUEST;
             String errorMessage = String.format(INVALID_ORDER_BY_MSG, orderBy);

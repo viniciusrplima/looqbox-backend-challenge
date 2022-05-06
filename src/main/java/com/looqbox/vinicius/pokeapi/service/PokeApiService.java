@@ -22,9 +22,14 @@ public class PokeApiService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<String> searchPokemons(String prefix) {
-        String queryTemplate = "{\"query\":\"query {pokemon_v2_pokemon(where: {name: {_like: \\\"%s\\\"}}) {name}}\",\"variables\":{}}";
-        String query = String.format(queryTemplate, "%" + prefix + "%");
+    public List<String> searchPokemons(String nameSubstr) {
+        String graphqlTemplate = "" +
+                "query {" +
+                "   pokemon_v2_pokemon(where: {name: {_like: \"%s\"}}) {" +
+                "       name" +
+                "   }" +
+                "}";
+        String query = createGraphQLQueryObj(graphqlTemplate, "%" + nameSubstr + "%");
 
         Map<String, Object> responseObject = restTemplate.postForObject(pokeapiUrl, query, Map.class);
         Map<String, Object> data = (Map<String, Object>) responseObject.get("data");
@@ -33,6 +38,16 @@ public class PokeApiService {
                 .collect(Collectors.toList());
 
         return pokemons;
+    }
+
+    private String createGraphQLQueryObj(String query, String... variables) {
+        String queryTemplate = "" +
+                "{" +
+                "   \"query\": \"%s\" " +
+                "}";
+        String formattedQuery = String.format(query, variables);
+        String scapedQuery = formattedQuery.replace("\"", "\\\"");
+        return String.format(queryTemplate, scapedQuery);
     }
 
 }

@@ -20,10 +20,10 @@ public class PokemonService {
         List<String> pokemons = pokeApiService.searchPokemons(query);
         Sort<String> sorting = new QuickSort<>();
 
-        if (OrderBy.LENGTH_SORT.equals(orderBy)) {
+        if (OrderBy.LENGTH_SORT.equalsIgnoreCase(orderBy)) {
             pokemons = sorting.sort(pokemons, new StringLengthComparator());
         }
-        else if (OrderBy.ALPHABETICAL_SORT.equals(orderBy)) {
+        else if (OrderBy.ALPHABETICAL_SORT.equalsIgnoreCase(orderBy)) {
             pokemons = sorting.sort(pokemons, new AlphabeticalOrderComparator());
         }
 
