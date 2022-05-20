@@ -1,4 +1,4 @@
-package com.looqbox.vinicius.pokeapi.dto;
+package com.looqbox.vinicius.pokeapi.dto.response;
 
 import org.springframework.http.HttpStatus;
 

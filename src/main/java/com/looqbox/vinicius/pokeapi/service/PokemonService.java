@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PokemonService {
@@ -17,13 +18,15 @@ public class PokemonService {
     private PokeApiService pokeApiService;
 
     public List<String> listPokemons(String query, String orderBy) {
-        List<String> pokemons = pokeApiService.searchPokemons(query);
+        List<String> pokemons = pokeApiService.getPokemons().stream()
+                .filter(str -> str.contains(query))
+                .collect(Collectors.toList());
         Sort<String> sorting = new QuickSort<>();
 
-        if (OrderBy.LENGTH_SORT.equalsIgnoreCase(orderBy)) {
+        if (OrderBy.LENGTH.name().equalsIgnoreCase(orderBy)) {
             pokemons = sorting.sort(pokemons, new StringLengthComparator());
         }
-        else if (OrderBy.ALPHABETICAL_SORT.equalsIgnoreCase(orderBy)) {
+        else if (OrderBy.ALPHABETICAL.name().equalsIgnoreCase(orderBy)) {
             pokemons = sorting.sort(pokemons, new AlphabeticalOrderComparator());
         }
 

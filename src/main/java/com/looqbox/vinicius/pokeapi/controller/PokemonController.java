@@ -1,8 +1,8 @@
 package com.looqbox.vinicius.pokeapi.controller;
 
 import com.looqbox.vinicius.pokeapi.constants.OrderBy;
-import com.looqbox.vinicius.pokeapi.dto.ErrorResponseDTO;
-import com.looqbox.vinicius.pokeapi.dto.PokemonDTO;
+import com.looqbox.vinicius.pokeapi.dto.response.ErrorResponseDTO;
+import com.looqbox.vinicius.pokeapi.dto.response.PokemonDTO;
 import com.looqbox.vinicius.pokeapi.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,8 @@ public class PokemonController {
                                           @RequestParam(name = "orderBy", required = false, defaultValue = "") String orderBy) {
 
         if (orderBy.length() > 0 &&
-            !OrderBy.LENGTH_SORT.equalsIgnoreCase(orderBy) &&
-            !OrderBy.ALPHABETICAL_SORT.equalsIgnoreCase(orderBy)) {
+            !OrderBy.LENGTH.name().equalsIgnoreCase(orderBy) &&
+            !OrderBy.ALPHABETICAL.name().equalsIgnoreCase(orderBy)) {
 
             HttpStatus status = HttpStatus.BAD_REQUEST;
             String errorMessage = String.format(INVALID_ORDER_BY_MSG, orderBy);

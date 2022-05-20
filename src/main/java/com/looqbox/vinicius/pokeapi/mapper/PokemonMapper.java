@@ -1,7 +1,7 @@
 package com.looqbox.vinicius.pokeapi.mapper;
 
-import com.looqbox.vinicius.pokeapi.dto.HighlightDTO;
-import com.looqbox.vinicius.pokeapi.dto.PokemonDTO;
+import com.looqbox.vinicius.pokeapi.dto.response.HighlightDTO;
+import com.looqbox.vinicius.pokeapi.dto.response.PokemonDTO;
 
 public class PokemonMapper {
 
