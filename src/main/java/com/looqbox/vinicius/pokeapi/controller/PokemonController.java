@@ -1,8 +1,7 @@
-package com.looqbox.vinicius.pokeapi.api;
+package com.looqbox.vinicius.pokeapi.controller;
 
 import com.looqbox.vinicius.pokeapi.constants.OrderBy;
 import com.looqbox.vinicius.pokeapi.dto.ErrorResponseDTO;
-import com.looqbox.vinicius.pokeapi.dto.HighlightDTO;
 import com.looqbox.vinicius.pokeapi.dto.PokemonDTO;
 import com.looqbox.vinicius.pokeapi.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.looqbox.vinicius.pokeapi.mapper.PokemonMapper.toPokemonDTO;
+
 
 @RestController
 @RequestMapping("/pokemons")
@@ -42,33 +44,6 @@ public class PokemonController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(pokemons);
-    }
-
-    private PokemonDTO toPokemonDTO(String pokemonName, String query) {
-        PokemonDTO pokemon = new PokemonDTO();
-        pokemon.setName(pokemonName);
-
-        if (query.length() > 0) {
-            HighlightDTO highlight = createHighlight(pokemonName, query);
-            pokemon.setHighlight(highlight);
-        }
-
-        return pokemon;
-    }
-
-    private HighlightDTO createHighlight(String name, String query) {
-        int startIndex = name.indexOf(query);
-        int endIndex = startIndex + query.length();
-        String formattedName = name.substring(0, startIndex) +
-                "<b>" + name.substring(startIndex, endIndex) + "</b>" +
-                name.substring(endIndex, name.length());
-
-        HighlightDTO highlight = new HighlightDTO();
-        highlight.setStart(startIndex);
-        highlight.setEnd(endIndex);
-        highlight.setFormattedName(formattedName);
-
-        return highlight;
     }
 
 }
